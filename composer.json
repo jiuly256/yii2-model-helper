@@ -1,0 +1,22 @@
+{
+    "name": "jiuly256/yii2-model-helper",
+    "description": "Extensión Yii2 para gestionar múltiples modelos dinámicos de forma segura y robusta.",
+    "type": "yii2-extension",
+    "keywords": ["yii2", "multiple models", "dynamic form", "helper"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jiuly",
+            "email": "jiuly256@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "jiuly256\\modelhelper\\": "src/"
+        }
+    },
+    "require": {
+        "yiisoft/yii2": "^2.0"
+    },
+    "minimum-stability": "stable"
+}
