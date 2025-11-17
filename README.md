@@ -1,47 +1,44 @@
-🌟 ModelHelper para Yii2 — Gestión avanzada de múltiples modelos dinámicos
+# 🐬 ModelHelper para Yii2 — Gestión avanzada de múltiples modelos dinámicos
 
-Un componente ligero, robusto y totalmente reutilizable para manejar creación, carga, validación y borrado automático de múltiples modelos en un solo formulario dinámico en Yii2.
+Un componente ligero, robusto y totalmente reutilizable para manejar **creación, carga, validación y borrado automático de múltiples modelos** en un solo formulario dinámico en Yii2.
 
-🚀 ¿Qué resuelve este paquete?
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Yii2](https://img.shields.io/badge/Yii2-Framework-blue)
+![Status](https://img.shields.io/badge/Stable-Yes-brightgreen)
+![PHP](https://img.shields.io/badge/PHP-5.6%2B%20%7C%207.x%20%7C%208.x-777BB4?logo=php)
 
-Yii2 ofrece loadMultiple y validateMultiple, pero no resuelve el problema real:
+---
 
-¿Cómo reconstruyo N modelos dinámicos enviados por POST?
+## 🚀 ¿Qué resuelve este paquete?
 
-¿Cómo detecto cuáles se eliminaron en el frontend?
+Yii2 ofrece `loadMultiple` y `validateMultiple`, pero no resuelve el *problema real*:
 
-¿Cómo creo automáticamente los nuevos?
-
-¿Cómo los renumero de manera segura?
-
-¿Cómo evito IDs vacíos o índices rotos?
-
-👉 ModelHelper lo hace por ti.
+- Reconstruir N modelos dinámicos enviados por POST
+- Detectar elementos eliminados en el frontend
+- Crear automáticamente nuevos registros
+- Evitar índices rotos y conflictos de ID
+- Validación y guardado masivo sencillo
 
 Con una sola línea:
 
+```php
 $modelos = ModelHelper::createMultiple(MyModel::class, $modelosIniciales);
+```
 
+## 📦 Instalación (Composer)
 
-… obtienes una colección perfectamente reconstruida, segura y lista para loadMultiple.
-
-📦 Instalación (Composer)
+```bash
 composer require jiuly256/yii2-modelhelper
+```
 
-
-Luego agrégalo a tu config si usas alias personalizados:
-
-Yii::setAlias('@jiuly256', '@vendor/jiuly256');
-
-🔧 Uso básico
-Controller (100% genérico)
+## 🔧 Uso básico en controlador
+```php
 use jiuly256\modelhelper\ModelHelper;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
 public function actionMultiple($id)
 {
-    // Cargamos modelos existentes
     $modelos = MyModel::findAll(['parent_id' => $id]);
 
     if (empty($modelos)) {
@@ -49,26 +46,17 @@ public function actionMultiple($id)
     }
 
     if (Yii::$app->request->isPost) {
-
-        // IDs originales
         $oldIDs = ArrayHelper::map($modelos, 'id', 'id');
-
-        // Reconstrucción automática
         $modelos = ModelHelper::createMultiple(MyModel::class, $modelos);
-
-        // Cargar datos POST
         Model::loadMultiple($modelos, Yii::$app->request->post());
 
-        // Nuevos IDs después del POST
         $newIDs = ArrayHelper::map($modelos, 'id', 'id');
-
-        // Detectar eliminados
         $deletedIDs = array_diff($oldIDs, $newIDs);
+
         if ($deletedIDs) {
             MyModel::deleteAll(['id' => $deletedIDs]);
         }
 
-        // Guardar
         if (Model::validateMultiple($modelos)) {
             foreach ($modelos as $m) {
                 $m->parent_id = $id;
@@ -82,13 +70,10 @@ public function actionMultiple($id)
         'modelos' => $modelos
     ]);
 }
+```
 
-Vista ejemplo (lista para copiar)
-
-Archivo recomendado:
-
-📂 src/views/multi-model-example.php
-
+## 📄 Vista ejemplo multi-model-example.php
+```php
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -167,25 +152,10 @@ JS
 );
 ?>
 
-🧠 ¿Cómo funciona internamente?
+```
 
-ModelHelper::createMultiple():
-
-✔ Analiza el POST
-✔ Busca coincidencias por id
-✔ Reconstruye modelos existentes
-✔ Crea nuevos modelos para índices nuevos
-✔ Ignora IDs vacíos
-✔ Evita colisiones en índices
-✔ Devuelve un arreglo ordenado y completamente listo para loadMultiple
-
-Tu controller queda limpio.
-Tu vista maneja filas dinámicas sin romper nada.
-Tu backend controla automáticamente qué se borra y qué se crea.
-
-Productividad +100.
-
-🧩 Estructura del proyecto
+## 🧱 Estructura del paquete
+```php
 yii2-modelhelper/
 │
 ├── src/
@@ -196,22 +166,13 @@ yii2-modelhelper/
 ├── LICENSE
 ├── composer.json
 
-🛠 Requisitos
+```
 
-PHP 5.6+ / 7.x / 8.x
+## 🛠 Requisitos
+- PHP 5.6+ / 7.x / 8.x
+- Yii2 Framework
+- Composer
 
-Yii2 Framework
-
-Composer
-
-Probado en proyectos legacy + proyectos modernos.
-
-🤝 Contribuciones
-
-¡Pull Requests bienvenidos!
-Reporta issues, mejoras, ejemplos, integraciones o tests.
-
-📄 Licencia
-
-MIT.
-Puedes usarlo en proyectos personales, comerciales, privados o open source.
+## 🤝 Contribuciones
+Pull Requests, issues y mejoras bienvenidas.
+Se agradecen ejemplos, tests y demos adicionales.
