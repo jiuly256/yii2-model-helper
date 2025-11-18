@@ -1,5 +1,5 @@
 {
-    "name": "jiuly256/yii2-model-helper",
+    "name": "jiuly256/yii2-multi-model-helper",
     "description": "Extensión Yii2 para gestionar múltiples modelos dinámicos de forma segura y robusta.",
     "type": "yii2-extension",
     "keywords": ["yii2", "multiple models", "dynamic form", "helper"],
